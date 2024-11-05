@@ -7,15 +7,28 @@ var row = 0; //current guess (attempt #)
 var col = 0; //current letter for that attempt
 
 var gameOver = false;
-var word = "GREEN";
+var word = "";
 
 
 window.onload = function(){
-    intialize();
+    initializeGame();
 }
 
+function initializeGame(){
+    fetch("https://random-word-api.herokuapp.com/word?length=5")
+    .then(response=> response.json())
+    .then(wordArray=>{
+        word=wordArray[0].toUpperCase();
+        intializeBoard();
+    })
+    .catch(error=>{
+        console.error('Error fetching word', error);
+        word="GREEN";
+        intializeBoard();
+    });
+}
 
-function intialize() {
+function intializeBoard() {
 
     // Create the game board
     for (let r = 0; r < height; r++) {
